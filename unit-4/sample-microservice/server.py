@@ -109,12 +109,12 @@ def list_data():
     """ Returns all of the Datas """
     datas = []
     category = request.args.get('category')
-    name = request.args.get('name')
+    gift = request.args.get('gift')
     available = request.args.get('available')
     if category:
         datas = Data.find_by_category(category)
-    elif name:
-        datas = Data.find_by_name(name)
+    elif gift:
+        datas = Data.find_by_gift(gift)
     elif available:
         datas = Data.find_by_availability(available)
     else:
@@ -154,7 +154,7 @@ def create_data():
     if request.headers.get('Content-Type') == 'application/x-www-form-urlencoded':
         app.logger.info('Processing FORM data')
         item = {
-            'name': request.form['name'],
+            'gift': request.form['gift'],
             'category': request.form['category'],
             'available': request.form['available'].lower() in ['true', '1', 't']
         }
@@ -231,7 +231,7 @@ def init_db(redis=None):
 # load sample data
 def data_load(payload):
     """ Loads a Data into the database """
-    data = Data(0, payload['name'], payload['category'])
+    data = Data(0, payload['gift'], payload['category'])
     data.save()
 
 def data_reset():
